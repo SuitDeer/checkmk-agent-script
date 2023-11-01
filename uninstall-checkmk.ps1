@@ -1,12 +1,15 @@
 # check if running as administrator
 #Requires -RunAsAdministrator
 
-$SERVER_NAME = "v-u-checkmk-p"
-$SITE_NAME = "cmk"
-$API_URL = "http://$SERVER_NAME/$SITE_NAME/check_mk/api/1.0"
+# parameters needed to be set site-specific.
+$SERVER_NAME="v-u-checkmk-p"
+$SITE_NAME="cmk"
+$API_URL="http://$SERVER_NAME/$SITE_NAME/check_mk/api/1.0"
+$USERNAME="automation" 
+$PASSWORD="<PASSWORD_OF_THE_AUTOMATION_USER>"
+# End specific parameters
+##### below should not be changed unless you are absolutely sure in what you are doing !
 
-$USERNAME = "automation"
-$PASSWORD = "<PASSWORD_OF_THE_AUTOMATION_USER>"
 
 # Download check_mk_agent.msi file from checkmk-server via REST-API
 $headers = @{
