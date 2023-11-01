@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # parameters needed to be set site-specific.
 SERVER_NAME="v-u-checkmk-p"
 SITE_NAME="cmk"
@@ -35,7 +36,9 @@ fi
 # Delete Host via REST-API
 curl -H "Accept: application/json" -H "Authorization: Bearer $USERNAME $PASSWORD" -X DELETE -H "Content-Type: application/json" -d "$BODY" "$API_URL/objects/host_config/$(hostname | tr '[:upper:]' '[:lower:]')"
 
+
 sleep 3
+
 
 # Get ETag from "pending changes" object
 # Create a temporary file
@@ -47,11 +50,14 @@ result=$(grep -iE '^ETag: ' "$temp_file" | awk '{print $2}' | tr -d '"' | tr -cd
 # Delete the temporary file
 rm "$temp_file"
 
+
 sleep 3
+
 
 # Activate the changes via REST-API
 BODY="{\"force_foreign_changes\": \"false\", \"redirect\": \"false\", \"sites\": [\"$SITE_NAME\"]}"
 curl -H "Accept: application/json" -H "Authorization: Bearer $USERNAME $PASSWORD" -H "If-Match: \"$result\"" -X POST -H "Content-Type: application/json" -d "$BODY" "$API_URL/domain-types/activation_run/actions/activate-changes/invoke"
+
 
 # Script deletes itself
 currentscript=$0

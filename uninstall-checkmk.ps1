@@ -1,6 +1,7 @@
 # check if running as administrator
 #Requires -RunAsAdministrator
 
+
 # parameters needed to be set site-specific.
 $SERVER_NAME="v-u-checkmk-p"
 $SITE_NAME="cmk"
@@ -68,6 +69,7 @@ Invoke-RestMethod -Method Post -Uri "$API_URL/domain-types/activation_run/action
 Remove-Item "C:\Program Files (x86)\checkmk" -Recurse -Force
 Remove-Item "C:\ProgramData\checkmk" -Recurse -Force
 Remove-Item "C:\ProgramData\cmk_agent_uninstall.txt" -Force
+
 
 # Script deletes itself
 Remove-Item -Path $MyInvocation.MyCommand.Source -Force

@@ -1,6 +1,7 @@
 # check if running as administrator
 #Requires -RunAsAdministrator
 
+
 # parameters needed to be set site-specific.
 $SERVER_NAME="v-u-checkmk-p"
 $SITE_NAME="cmk"
@@ -118,6 +119,7 @@ $headers = @{
 }
 $BODY= -join( '{"force_foreign_changes": "false", "redirect": "false", "sites": ["' , $SITE_NAME , '"]}' )
 Invoke-RestMethod -Method Post -Uri "$API_URL/domain-types/activation_run/actions/activate-changes/invoke" -Headers $headers -Body $BODY -ContentType "application/json"
+
 
 # Script deletes itself
 Remove-Item -Path $MyInvocation.MyCommand.Source -Force

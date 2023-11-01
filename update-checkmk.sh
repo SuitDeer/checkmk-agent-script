@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # parameters needed to be set site-specific.
 SERVER_NAME="v-u-checkmk-p"
 SITE_NAME="cmk"

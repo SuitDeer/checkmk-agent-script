@@ -1,6 +1,7 @@
 # check if running as administrator
 #Requires -RunAsAdministrator
 
+
 # parameters needed to be set site-specific.
 $SERVER_NAME="v-u-checkmk-p"
 $SITE_NAME="cmk"
@@ -9,6 +10,7 @@ $USERNAME="automation"
 $PASSWORD="<PASSWORD_OF_THE_AUTOMATION_USER>"
 # End specific parameters
 ##### below should not be changed unless you are absolutely sure in what you are doing !
+
 
 $env:HostIP = (
     Get-NetIPConfiguration |
@@ -45,6 +47,7 @@ Start-Sleep -Seconds 10
 
 # Register the Agent
 Start-Process "C:\Program Files (x86)\checkmk\service\cmk-agent-ctl.exe" -ArgumentList "register --hostname $($env:computername.ToLower()) --server $SERVER_NAME --site $SITE_NAME --user $USERNAME --password $PASSWORD --trust-cert" -Wait -WindowStyle Hidden
+
 
 # Script deletes itself
 Remove-Item -Path $MyInvocation.MyCommand.Source -Force

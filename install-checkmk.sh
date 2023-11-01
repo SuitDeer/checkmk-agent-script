@@ -49,6 +49,7 @@ fi
 
 sleep 10
 
+
 # Get the host IP address
 HostIP=$(ip -4 route get 8.8.8.8 | awk 'NR==1 {print $7}')
 
@@ -56,7 +57,9 @@ HostIP=$(ip -4 route get 8.8.8.8 | awk 'NR==1 {print $7}')
 BODY="{\"folder\": \"/linux_maschinen\", \"host_name\": \"$(hostname | tr '[:upper:]' '[:lower:]')\", \"attributes\": {\"ipaddress\": \"$HostIP\"}}"
 curl -H "Accept: application/json" -H "Authorization: Bearer $USERNAME $PASSWORD" -X POST -H "Content-Type: application/json" -d "$BODY" "$API_URL/domain-types/host_config/collections/all"
 
+
 sleep 3
+
 
 # Get ETag from "pending changes" object
 # Create a temporary file
@@ -68,24 +71,32 @@ result=$(grep -iE '^ETag: ' "$temp_file" | awk '{print $2}' | tr -d '"' | tr -cd
 # Delete the temporary file
 rm "$temp_file"
 
+
 sleep 3
+
 
 # Activate the changes via REST-API
 BODY="{\"force_foreign_changes\": \"false\", \"redirect\": \"false\", \"sites\": [\"$SITE_NAME\"]}"
 curl -H "Accept: application/json" -H "Authorization: Bearer $USERNAME $PASSWORD" -H "If-Match: \"$result\"" -X POST -H "Content-Type: application/json" -d "$BODY" "$API_URL/domain-types/activation_run/actions/activate-changes/invoke"
 
+
 sleep 60
+
 
 # Register the Agent
 cmk-agent-ctl register --hostname $(hostname | tr '[:upper:]' '[:lower:]') --server $SERVER_NAME --site $SITE_NAME --user $USERNAME --password $PASSWORD --trust-cert
 
+
 sleep 120
+
 
 # Accept all found labels for the newly created host
 BODY="{\"host_name\": \"$(hostname | tr '[:upper:]' '[:lower:]')\", \"mode\": \"only_host_labels\"}"
 curl -H "Accept: application/json" -H "Authorization: Bearer $USERNAME $PASSWORD" -X POST -H "Content-Type: application/json" -d "$BODY" "$API_URL/domain-types/service_discovery_run/actions/start/invoke"
 
+
 sleep 30
+
 
 # Get ETag from "pending changes" object
 # Create a temporary file
@@ -97,11 +108,14 @@ result=$(grep -iE '^ETag: ' "$temp_file" | awk '{print $2}' | tr -d '"' | tr -cd
 # Delete the temporary file
 rm "$temp_file"
 
+
 sleep 3
+
 
 # Activate the changes via REST-API
 BODY="{\"force_foreign_changes\": \"false\", \"redirect\": \"false\", \"sites\": [\"$SITE_NAME\"]}"
 curl -H "Accept: application/json" -H "Authorization: Bearer $USERNAME $PASSWORD" -H "If-Match: \"$result\"" -X POST -H "Content-Type: application/json" -d "$BODY" "$API_URL/domain-types/activation_run/actions/activate-changes/invoke"
+
 
 # Script deletes itself
 currentscript=$0
