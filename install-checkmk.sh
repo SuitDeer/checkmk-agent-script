@@ -4,7 +4,7 @@
 SERVER_NAME="v-u-checkmk-p"
 SITE_NAME="cmk"
 API_URL="http://$SERVER_NAME/$SITE_NAME/check_mk/api/1.0"
-USERNAME="automation" 
+USERNAME="automation"
 PASSWORD="<PASSWORD_OF_THE_AUTOMATION_USER>"
 # Debug switch, set to yes for verbose info, else the script will be silent.
 DEBUG="yes"
@@ -62,6 +62,28 @@ else
   echo "Neither dpkg nor rpm is installed. Install aborted."
   exit
 fi
+
+
+# Create a checkmk local script to check for pending reboots
+if [ $DEBUG == "yes" ]; then
+  echo "Create a checkmk local script to check for pending reboots"
+fi
+sudo cat << EOF > /usr/lib/check_mk_agent/local/reboot
+#!/bin/bash
+
+[[ -f /etc/os-release ]] && source /etc/os-release
+
+if [[ -f /var/run/reboot-required ]]; then
+  if [[ -f /var/run/reboot-required.pkgs ]]; then
+    echo "1 Reboot_needed - A system reboot is needed due to updated packages: \$(cat /var/run/reboot-required.pkgs | tr '\n' ' ')"
+  else
+    echo "1 Reboot_needed - A system reboot is needed"
+  fi
+else
+  echo "0 Reboot_needed - No system reboot needed"
+fi
+EOF
+sudo chmod +x /usr/lib/check_mk_agent/local/reboot
 
 
 sleep 10
