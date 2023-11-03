@@ -5,7 +5,7 @@
 SERVER_NAME="v-u-checkmk-p"
 SITE_NAME="cmk"
 API_URL="http://$SERVER_NAME/$SITE_NAME/check_mk/api/1.0"
-USERNAME="automation" 
+USERNAME="automation"
 PASSWORD="<PASSWORD_OF_THE_AUTOMATION_USER>"
 # Debug switch, set to yes for verbose info, else the script will be silent.
 DEBUG="yes"

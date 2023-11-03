@@ -6,7 +6,7 @@
 $SERVER_NAME="v-u-checkmk-p"
 $SITE_NAME="cmk"
 $API_URL="http://$SERVER_NAME/$SITE_NAME/check_mk/api/1.0"
-$USERNAME="automation" 
+$USERNAME="automation"
 $PASSWORD="<PASSWORD_OF_THE_AUTOMATION_USER>"
 # Debug switch, set to yes for verbose info, else the script will be silent.
 $DEBUG="yes"
@@ -86,7 +86,7 @@ $headers = @{
 }
 $BODY= -join( '{"force_foreign_changes": "false", "redirect": "false", "sites": ["' , $SITE_NAME , '"]}' )
 Invoke-RestMethod -Method Post -Uri "$API_URL/domain-types/activation_run/actions/activate-changes/invoke" -Headers $Headers -Body $BODY -ContentType "application/json"
-    
+
 
 Remove-Item "C:\Program Files (x86)\checkmk" -Recurse -Force
 Remove-Item "C:\ProgramData\checkmk" -Recurse -Force
