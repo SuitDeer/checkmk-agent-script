@@ -12,14 +12,25 @@ Furthermore these scripts are adding or removing the client-object in the checkm
 ---
 
 ## Linux
+1. For all scripts please edit the following variuables:
+   - **SERVER_NAME**: IP-Address or DNS name of your checkmk-Server.
+   - **SITE_NAME**: Site where you want to add the host/client-system to. 
 
-For all scripts please edit the following variuables:
-- **SERVER_NAME**: IP-Address or DNS name of your checkmk-Server.
-- **SITE_NAME**: Site where you want to add the host/client-system to. 
-  
-  More info what a site is in checkmk: [https://docs.checkmk.com/latest/en/intro_setup.html#create_site](https://docs.checkmk.com/latest/en/intro_setup.html#create_site)
+     More info what a site is in checkmk: [https://docs.checkmk.com/latest/en/intro_setup.html#create_site](https://docs.checkmk.com/latest/en/intro_setup.html#create_site)
 
-- **PASSWORD**: Password of the newly created or existent user `automation`
+   - **PASSWORD**: Password of the newly created or existent user `automation`
+
+2. After creating or downloading the script please make it executable:
+
+   ```bash
+   chmod +x <SCRIPTNAME.sh>
+   ```
+
+3. Execute the script with root-rights:
+   
+   ```bash
+   sudo ./<SCRIPTNAME.sh>
+   ``` 
 
 **All scripts are running ca. 3 minutes (do to some API calls.) !!!**
 
@@ -33,13 +44,19 @@ For all scripts please edit the following variuables:
 
 ## Windows
 
-For all scripts please edit the following variuables:
-- **SERVER_NAME**: IP-Address or DNS name of your checkmk-Server.
-- **SITE_NAME**: Site where you want to add the host/client-system to. 
-  
-  More info what a site is in checkmk: [https://docs.checkmk.com/latest/en/intro_setup.html#create_site](https://docs.checkmk.com/latest/en/intro_setup.html#create_site)
+1. For all scripts please edit the following variuables:
+   - **SERVER_NAME**: IP-Address or DNS name of your checkmk-Server.
+   - **SITE_NAME**: Site where you want to add the host/client-system to. 
 
-- **PASSWORD**: Password of the newly created or existent user `automation`
+     More info what a site is in checkmk: [https://docs.checkmk.com/latest/en/intro_setup.html#create_site](https://docs.checkmk.com/latest/en/intro_setup.html#create_site)
+
+   - **PASSWORD**: Password of the newly created or existent user `automation`
+
+2. Execute the script with administrator-rights:
+   
+   ```powershell
+   powershell ./<SCRIPTNAME.ps1>
+   ``` 
 
 **All scripts are running ca. 3 minutes (do to some API calls.) !!!**
 
