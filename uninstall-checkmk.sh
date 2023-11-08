@@ -81,12 +81,12 @@ if command -v dpkg &> /dev/null; then
   spinner "Download check_mk_agent.deb file from checkmk-server via REST-API" 0
 
   # Uninstall check_mk_agent
-  apt remove -y check-mk-agent 1> /dev/null 2> error.log &
+  apt-get remove -y check-mk-agent 1> /dev/null 2> error.log &
+  spinner "Uninstall check_mk_agent" 0
   rm -r /usr/lib/check_mk_agent
   rm -r /var/lib/check_mk_agent
   rm -r /var/lib/cmk-agent
   rm -r /etc/check_mk
-  spinner "Uninstall check_mk_agent" 0
 
 elif command -v rpm &> /dev/null; then
   # Download check_mk_agent.rpm file from checkmk-server via REST-API
@@ -95,11 +95,11 @@ elif command -v rpm &> /dev/null; then
 
   # Install check_mk_agent
   dnf remove -y check_mk_agent 1> /dev/null 2> error.log &
+  spinner "Uninstall check_mk_agent" 0
   rm -r /usr/lib/check_mk_agent
   rm -r /var/lib/check_mk_agent
   rm -r /var/lib/cmk-agent
   rm -r /etc/check_mk
-  spinner "Uninstall check_mk_agent" 0
 
 else
   printf "$(tput setaf 1)%s$(tput sgr0)\n" "Neither dpkg nor rpm is installed! Uninstall aborted!"
