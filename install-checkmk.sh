@@ -148,15 +148,10 @@ rm "$temp_file"
 temp_file=$(mktemp)
 BODY="{\"force_foreign_changes\": \"false\", \"redirect\": \"false\", \"sites\": [\"$SITE_NAME\"]}"
 curl -s -S -H "Accept: application/json" -H "Authorization: Bearer $USERNAME $PASSWORD" -H "If-Match: \"$etag\"" -X POST -H "Content-Type: application/json" -d "$BODY" "$API_URL/domain-types/activation_run/actions/activate-changes/invoke"  1> "$temp_file" 2> error.log &
-spinner "Start activating the pending changes via REST-API" 0
+spinner "Start activating the pending changes via REST-API" 60
 # Extract the id value from the file content
 activation_id=$(cat $temp_file | grep -oP '(?<="id": ")[^"]+' | head -n1)
 rm "$temp_file"
-
-
-# Waiting for changes to be applied
-curl -s -S -H "Accept: */*" -H "Authorization: Bearer $USERNAME $PASSWORD" -X GET "$API_URL/objects/activation_run/$activation_id/actions/wait-for-completion/invoke" 1> /dev/null 2> error.log &
-spinner "Waiting for changes to be applied" 0
 
 
 # Register the Agent1> /dev/null 2> error.log
