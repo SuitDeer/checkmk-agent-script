@@ -143,20 +143,8 @@ $job = Start-Job -ArgumentList $API_URL,$USERNAME,$PASSWORD,$SITE_NAME,$result -
     $result = Invoke-RestMethod -Method Post -Uri "$($args[0])/domain-types/activation_run/actions/activate-changes/invoke" -Headers $headers -Body $BODY -ContentType "application/json"
     Write-Output $result.Id
 }
-Spinner -JobId $job.Id -Message "Start activating the pending changes via REST-API" -AdditionalDelay 0
+Spinner -JobId $job.Id -Message "Start activating the pending changes via REST-API" -AdditionalDelay 60
 $activation_id = Receive-Job -Id $job.Id
-Remove-Job -Id $job.Id
-
-
-# Waiting for changes to be applied
-$job = Start-Job -ArgumentList $API_URL,$USERNAME,$PASSWORD,$activation_id -ScriptBlock {
-    $headers = @{
-        'Accept' = '*/*'
-        'Authorization' = "Bearer $($args[1]) $($args[2])"
-    }
-    Invoke-RestMethod -Method Post -Uri "$($args[0])/objects/activation_run/$($args[3])/actions/wait-for-completion/invoke" -Headers $headers -Body $BODY -ContentType "application/json"
-}
-Spinner -JobId $job.Id -Message "Waiting for changes to be applied" -AdditionalDelay 0
 Remove-Job -Id $job.Id
 
 
