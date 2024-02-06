@@ -59,6 +59,21 @@ spinner() {
 }
 
 
+# Check if there are any pending changes on the checkmk server
+temp_file=$(mktemp)
+# Get Content-Length from "pending changes" object via REST-API
+curl -s -S -I -H "Authorization: Bearer $USERNAME $PASSWORD" -X GET "$API_URL/domain-types/activation_run/collections/pending_changes" > "$temp_file" 2> error.log &
+spinner "Get Content-Length from 'pending changes' object via REST-API" 0
+# Extract the ETag value from the file content
+result=$(grep -iE '^Content-Length: ' "$temp_file" | awk '{print $2}' | tr -d '"' | tr -cd '[:alnum:]')
+# Delete the temporary file
+rm "$temp_file"
+if [ "$result" -gt 350 ]; then
+  printf "$(tput setaf 1)%s$(tput sgr0)\n" "Please revert or accept pending change(s) on the checkmk server before running the script! Install aborted!"
+  exit
+fi
+
+
 # Check if rpm or dpkg package manager is installed
 if command -v dpkg &> /dev/null; then
   # Download check_mk_agent.deb file from checkmk-server via REST-API
