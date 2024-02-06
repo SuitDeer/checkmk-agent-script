@@ -63,7 +63,7 @@ Spinner -JobId $job.Id -Message "Get Content-Length from 'pending changes' objec
 $result = Receive-Job -Id $job.Id
 Remove-Job -Id $job.Id
 if ($result -gt 350) {
-    Write-Output "Please revert or accept pending change(s) on the checkmk server before running the script! Uninstall aborted!" -ForegroundColor Red
+    Write-Host "Please revert or accept pending change(s) on the checkmk server before running the script! Uninstall aborted!" -ForegroundColor Red
     exit
 }
 
@@ -87,9 +87,9 @@ Remove-Job -Id $job.Id
 $job = Start-Job -ScriptBlock {
     $installpathcheckmk = "/x C:\Windows\Temp\check_mk_agent.msi /qn"
     Start-Process C:\Windows\System32\msiexec.exe -ArgumentList $installpathcheckmk -wait
-    Remove-Item "C:\Program Files (x86)\checkmk" -Recurse -Force
-    Remove-Item "C:\ProgramData\checkmk" -Recurse -Force
-    Remove-Item "C:\ProgramData\cmk_agent_uninstall.txt" -Force
+    Remove-Item "C:\Program Files (x86)\checkmk" -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item "C:\ProgramData\checkmk" -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item "C:\ProgramData\cmk_agent_uninstall.txt" -Force -ErrorAction SilentlyContinue
 }
 Spinner -JobId $job.Id -Message "Uninstall check_mk_agent" -AdditionalDelay 0
 Remove-Job -Id $job.Id
