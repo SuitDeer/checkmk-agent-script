@@ -50,6 +50,24 @@ function Spinner {
 }
 
 
+# Check if there are any pending changes on the checkmk server
+$job = Start-Job -ArgumentList $API_URL,$USERNAME,$PASSWORD -ScriptBlock {
+    $headers = @{
+        'Accept' = 'application/json'
+        'Authorization' = "Bearer $($args[1]) $($args[2])"
+    }
+    $result = Invoke-WebRequest -Method GET -Uri "$($args[0])/domain-types/activation_run/collections/pending_changes" -Headers $headers -UseBasicParsing
+    Write-Output $result.RawContentLength
+}
+Spinner -JobId $job.Id -Message "Get Content-Length from 'pending changes' object via REST-API" -AdditionalDelay 0
+$result = Receive-Job -Id $job.Id
+Remove-Job -Id $job.Id
+if ($result -gt 350) {
+    Write-Host "Please revert or accept pending change(s) on the checkmk server before running the script! Uninstall aborted!" -ForegroundColor Red
+    exit
+}
+
+
 # Download check_mk_agent.msi file from checkmk-server via REST-API
 $job = Start-Job -ArgumentList $API_URL,$USERNAME,$PASSWORD -ScriptBlock {
     $headers = @{
