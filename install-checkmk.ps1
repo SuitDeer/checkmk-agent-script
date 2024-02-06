@@ -64,7 +64,7 @@ Spinner -JobId $job.Id -Message "Get Content-Length from 'pending changes' objec
 $result = Receive-Job -Id $job.Id
 Remove-Job -Id $job.Id
 if ($result -gt 350) {
-    Write-Output "Please revert or accept pending change(s) on the checkmk server before running the script! Install aborted!" -ForegroundColor Red
+    Write-Host "Please revert or accept pending change(s) on the checkmk server before running the script! Install aborted!" -ForegroundColor Red
     exit
 }
 
