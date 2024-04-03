@@ -93,7 +93,7 @@ elif command -v rpm &> /dev/null; then
   curl -s -S -H "Accept: application/octet-stream" -H "Authorization: Bearer $USERNAME $PASSWORD" -X GET -H "Content-Type: application/json" -o "/tmp/check_mk_agent.rpm" "$API_URL/domain-types/agent/actions/download/invoke?os_type=linux_rpm" 1> /dev/null 2> error.log &
   spinner "Download check_mk_agent.rpm file from checkmk-server via REST-API" 0
 
-  # Install check_mk_agent
+  # Uninstall check_mk_agent
   dnf remove -y check_mk_agent 1> /dev/null 2> error.log &
   spinner "Uninstall check_mk_agent" 0
   rm -r /usr/lib/check_mk_agent
