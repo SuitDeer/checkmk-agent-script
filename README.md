@@ -3,9 +3,10 @@ Install, update and remove checkmk Agent on Windows or Linux with automated scri
 Furthermore these scripts are adding or removing the client-object in the checkmk-Server (via API calls).
 
 ## Prerequisites
-1. Open web interface from checkmk server and log-in with admin account.
-2. Create a new User (if not already existent) with the following name: `automation`
-3. Asign the Role `Administrator` to the `automation`-User.
+1. No pending changes open in checkmk instance before running a script.
+2. Open web interface from checkmk server and log-in with admin account.
+3. Create a new User (if not already existent) with the following name: `automation`
+4. Asign the Role `Administrator` to the `automation`-User.
 
    ![automation user](images/automation%20user%20(assign%20Administrator%20role).png)
 
