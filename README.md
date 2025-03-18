@@ -1,3 +1,5 @@
+# Archived! Scripts migrated to my blog: 
+[https://hostlab.tech/blog/install-update-and-remove-checkmk-agent](https://hostlab.tech/blog/install-update-and-remove-checkmk-agent)
 # checkmk-agent-script
 Install, update and remove checkmk Agent on Windows or Linux with automated scripts.
 Furthermore these scripts are adding or removing the client-object in the checkmk-Server (via API calls).
